@@ -65,7 +65,7 @@ function s:LastTestWasPhpspec()
 endfunction
 
 function s:GetRubyTestCommandTemplate()
-  return 'rspec {tests_path}'
+  return g:test_runner_rspec_command
 endfunction
 
 function s:GetPhpTestsPath()
