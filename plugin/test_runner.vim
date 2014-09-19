@@ -2,6 +2,10 @@ map <Leader>t :call RunCurrentTestFile()<CR>
 map <Leader>l :call RunLastTest()<CR>
 map <Leader>a :call RunAllTests()<CR>
 
+if !exists('g:test_runner_default_project_type')
+  let g:test_runner_default_project_type = 'ruby'
+endif
+
 if !exists('g:test_runner_rspec_command')
   let g:test_runner_rspec_command = 'rspec {tests_path}'
 endif
@@ -69,19 +73,37 @@ function s:GetRubyTestCommandTemplate()
 endfunction
 
 function s:GetPhpTestsPath()
-  return s:InPhpspecContext()? 'spec' : 'tests'
+  return s:InPhpspecContext()? '' : 'tests'
 endfunction
 
 function s:GetRubyTestsPath()
   return 'spec'
 endfunction
 
+function s:IsRubyProject()
+  return s:IsProjectType('ruby')
+endfunction
+
 function s:IsPhpProject()
-  return s:GetProjectType() == 'php'
+  return s:IsProjectType('php')
+endfunction
+
+function s:IsProjectType(project_type)
+  let l:type = s:GetProjectType()
+  return (l:type  == a:project_type) || (!s:IsSupportedProjectType(l:type) && s:IsDefaultProjectType(a:project_type))
+endfunction
+
+function s:IsDefaultProjectType(project_type)
+  return g:test_runner_default_project_type == a:project_type
+endfunction
+
+function s:IsSupportedProjectType(project_type)
+  let l:supported_projects = ['ruby', 'php']
+  return index(supported_projects, a:project_type) >= 0 
 endfunction
 
 function s:GetProjectType()
-  return &filetype
+  return &filetype 
 endfunction
 
 function! RunLastTest()
