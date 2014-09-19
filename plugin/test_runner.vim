@@ -37,7 +37,7 @@ function! RunCurrentTestFile()
   endif
 endfunction
 
-function s:GetTestCommand(...)
+function! s:GetTestCommand(...)
   let l:tests_path = a:0 > 0? a:1 : ''
   if s:IsPhpProject()
     let l:test_command_template = s:GetPhpTestCommandTemplate()
@@ -52,15 +52,15 @@ function s:GetTestCommand(...)
   return l:test_command
 endfunction
 
-function s:GetPhpTestCommandTemplate()
+function! s:GetPhpTestCommandTemplate()
   return s:InPhpspecContext()? g:test_runner_phpspec_command : g:test_runner_phpunit_command
 endfunction
 
-function s:InPhpspecContext()
+function! s:InPhpspecContext()
   return s:InPhpspecFile() || (!s:InPhpunitFile() && s:LastTestWasPhpspec())
 endfunction
 
-function s:LastTestWasPhpspec()
+function! s:LastTestWasPhpspec()
   if !exists('s:last_test_command')
     return 0
   endif
@@ -68,41 +68,41 @@ function s:LastTestWasPhpspec()
   return match(s:last_test_command, 'phpspec') != -1
 endfunction
 
-function s:GetRubyTestCommandTemplate()
+function! s:GetRubyTestCommandTemplate()
   return g:test_runner_rspec_command
 endfunction
 
-function s:GetPhpTestsPath()
+function! s:GetPhpTestsPath()
   return s:InPhpspecContext()? '' : 'tests'
 endfunction
 
-function s:GetRubyTestsPath()
+function! s:GetRubyTestsPath()
   return 'spec'
 endfunction
 
-function s:IsRubyProject()
+function! s:IsRubyProject()
   return s:IsProjectType('ruby')
 endfunction
 
-function s:IsPhpProject()
+function! s:IsPhpProject()
   return s:IsProjectType('php')
 endfunction
 
-function s:IsProjectType(project_type)
+function! s:IsProjectType(project_type)
   let l:type = s:GetProjectType()
   return (l:type  == a:project_type) || (!s:IsSupportedProjectType(l:type) && s:IsDefaultProjectType(a:project_type))
 endfunction
 
-function s:IsDefaultProjectType(project_type)
+function! s:IsDefaultProjectType(project_type)
   return g:test_runner_default_project_type == a:project_type
 endfunction
 
-function s:IsSupportedProjectType(project_type)
+function! s:IsSupportedProjectType(project_type)
   let l:supported_projects = ['ruby', 'php']
   return index(supported_projects, a:project_type) >= 0 
 endfunction
 
-function s:GetProjectType()
+function! s:GetProjectType()
   return &filetype 
 endfunction
 
@@ -118,15 +118,15 @@ function! InTestFile()
   return s:FileMatches('\(_spec.rb\|Test.php\|Spec.php\)$')
 endfunction
 
-function s:InPhpunitFile()
+function! s:InPhpunitFile()
   return s:FileMatches('Test.php$')
 endfunction
 
-function s:InPhpspecFile()
+function! s:InPhpspecFile()
   return s:FileMatches('Spec.php$')
 endfunction
 
-function s:FileMatches(regex)
+function! s:FileMatches(regex)
   return match(expand("%"), a:regex) != -1
 endfunction
 
@@ -139,6 +139,6 @@ function! RunTests(test_command)
   execute s:GetRunCommand(a:test_command)
 endfunction
 
-function s:GetRunCommand(cmd)
+function! s:GetRunCommand(cmd)
   return substitute(g:test_runner_run_command, '{test_command}', a:cmd, 'g')
 endfunction
