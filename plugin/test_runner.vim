@@ -14,6 +14,10 @@ if !exists('g:test_runner_phpunit_command')
   let g:test_runner_phpunit_command = 'bin/phpunit {tests_path}'
 endif
 
+if !exists('g:test_runner_php_tests_path')
+  let g:test_runner_php_tests_path = "tests"
+endif
+
 if !exists('g:test_runner_phpspec_command')
   let g:test_runner_phpspec_command = 'bin/phpspec run {tests_path}'
 endif
@@ -73,7 +77,7 @@ function! s:GetRubyTestCommandTemplate()
 endfunction
 
 function! s:GetPhpTestsPath()
-  return s:InPhpspecContext()? '' : 'tests'
+  return s:InPhpspecContext()? '' : g:test_runner_php_tests_path
 endfunction
 
 function! s:GetRubyTestsPath()
