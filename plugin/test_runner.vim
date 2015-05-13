@@ -1,6 +1,6 @@
-map <Leader>t :call RunCurrentTestFile()<CR>
-map <Leader>l :call RunLastTest()<CR>
-map <Leader>a :call RunAllTests()<CR>
+if !exists('g:test_runner_default_mappings')
+  let g:test_runner_default_mappings = 1
+endif
 
 if !exists('g:test_runner_default_project_type')
   let g:test_runner_default_project_type = 'ruby'
@@ -24,6 +24,12 @@ endif
 
 if !exists('g:test_runner_run_command')
   let g:test_runner_run_command = "!clear && echo {test_command} && {test_command}"
+endif
+
+if g:test_runner_default_mappings == 1
+    map <Leader>t :call RunCurrentTestFile()<CR>
+    map <Leader>l :call RunLastTest()<CR>
+    map <Leader>a :call RunAllTests()<CR>
 endif
 
 function! RunAllTests()
