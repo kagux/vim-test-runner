@@ -26,6 +26,11 @@ map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 ```
 
+> If you want to disable the default mappings, you should add also
+```vim
+let g:test_runner_default_mappings = 0
+```
+
 ### Custom command
 
 Overwrite the `g:rspec_command` variable to execute a custom command.
